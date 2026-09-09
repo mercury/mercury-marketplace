@@ -5,12 +5,12 @@ metadata:
   version: "1.0.0"
   category: agentic
   tools: [getCurrentDate, getAccounts, listTransactions]
-  requires: [mercury-shared]
+  requires: [mercury-mcp]
 ---
 
 # Mercury Detect Anomaly
 
-Detect anomalous transactions by building historical spending baselines and flagging pattern breaks. This skill pulls baseline and recent transactions through the Mercury MCP server, computes per-counterparty and per-category norms, and scores recent transactions against those baselines using a weighted anomaly model. It is read-only. Follow `mercury-shared` for pagination, dates, and formatting.
+Detect anomalous transactions by building historical spending baselines and flagging pattern breaks. This skill pulls baseline and recent transactions through the Mercury MCP server, computes per-counterparty and per-category norms, and scores recent transactions against those baselines using a weighted anomaly model. It is read-only. Follow `mercury-mcp` for pagination, dates, and formatting.
 
 ## Parameters
 
@@ -36,7 +36,7 @@ Detect anomalous transactions by building historical spending baselines and flag
 
 ### Step 2: Fetch Transactions
 
-Two fetches: one for the baseline window, one for the analysis window. Both restricted to `sent` transactions, both paginated to completion per `mercury-shared`. `listTransactions` takes a single `accountId`; omit it to cover every account, or call once per account when the user has narrowed the scope. Use `postedStart`/`postedEnd`, not `start`/`end`.
+Two fetches: one for the baseline window, one for the analysis window. Both restricted to `sent` transactions, both paginated to completion per `mercury-mcp`. `listTransactions` takes a single `accountId`; omit it to cover every account, or call once per account when the user has narrowed the scope. Use `postedStart`/`postedEnd`, not `start`/`end`.
 
 ```
 # Baseline window

@@ -5,12 +5,12 @@ metadata:
   version: "1.0.0"
   category: agentic
   tools: [getCurrentDate, getAccounts, listTransactions]
-  requires: [mercury-shared]
+  requires: [mercury-mcp]
 ---
 
 # Mercury Analyze Spend
 
-Analyze spending patterns across Mercury accounts with categorized breakdowns, counterparty grouping, and month-over-month comparisons. This skill fetches transactions through the Mercury MCP server and aggregates the results into a structured spend report. It is read-only. Follow `mercury-shared` for pagination, dates, and formatting.
+Analyze spending patterns across Mercury accounts with categorized breakdowns, counterparty grouping, and month-over-month comparisons. This skill fetches transactions through the Mercury MCP server and aggregates the results into a structured spend report. It is read-only. Follow `mercury-mcp` for pagination, dates, and formatting.
 
 ## Parameters
 
@@ -38,7 +38,7 @@ Analyze spending patterns across Mercury accounts with categorized breakdowns, c
 
 Fetch every `sent` transaction in the window. Pending transactions are excluded because their final amount may still shift.
 
-`listTransactions` takes a single `accountId`. Omit it when the analysis covers all accounts; otherwise call once per account in `accountFilter`. Paginate each call to completion per `mercury-shared`.
+`listTransactions` takes a single `accountId`. Omit it when the analysis covers all accounts; otherwise call once per account in `accountFilter`. Paginate each call to completion per `mercury-mcp`.
 
 ```
 listTransactions({

@@ -1,8 +1,1 @@
-{
-  "mcpServers": {
-    "mercury": {
-      "type": "http",
-      "url": "https://mcp.mercury.com/mcp"
-    }
-  }
-}
+../../.mcp.json

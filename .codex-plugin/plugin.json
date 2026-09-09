@@ -1,0 +1,30 @@
+{
+  "name": "mercury",
+  "version": "1.0.0",
+  "description": "Mercury banking for Codex: connects to the hosted Mercury MCP server (OAuth) and adds finance skills for spend analysis, anomaly detection, and cash reconciliation.",
+  "author": {
+    "name": "Mercury",
+    "url": "https://mercury.com"
+  },
+  "homepage": "https://docs.mercury.com",
+  "repository": "https://github.com/MercuryTechnologies/mercury-marketplace",
+  "license": "MIT",
+  "keywords": ["mercury", "banking", "finance", "accounting", "transactions", "bookkeeping", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Mercury",
+    "shortDescription": "Ask questions about your Mercury accounts and transactions",
+    "longDescription": "Connects Codex to your Mercury account through the hosted Mercury MCP server and adds finance skills: categorized spend analysis, anomaly detection, and cash reconciliation workpapers. Read-only.",
+    "developerName": "Mercury",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://mercury.com",
+    "privacyPolicyURL": "https://mercury.com/legal/privacy",
+    "termsOfServiceURL": "https://mercury.com/legal",
+    "defaultPrompt": [
+      "How did our software spend change last month?",
+      "Anything unusual in the operating account this week?"
+    ]
+  }
+}

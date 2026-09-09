@@ -1,22 +1,26 @@
 ---
-name: mercury-shared
-description: "Shared rules for Mercury MCP skills: tool naming, complete pagination, date anchoring with getCurrentDate, postedStart/postedEnd filtering, and the debit-sign convention."
+name: mercury-mcp
+description: "Use whenever the user asks about their Mercury bank accounts, balances, transactions, spend, cards, statements, recipients, or cashflow. Covers how to use the Mercury MCP tools correctly: complete pagination, date anchoring with getCurrentDate, postedStart/postedEnd filtering, the debit-sign convention, and masking account numbers. The other Mercury skills build on this one."
 metadata:
   version: "1.0.0"
   category: shared
-  tools: [getCurrentDate]
+  tools: [getCurrentDate, getAccounts, getAccount, listTransactions, getTransactionById, listCategories, getAccountStatements, getCashflowSummary]
   requires: []
 ---
 
-# Mercury Shared Rules
+# Mercury MCP
 
-Every skill in this plugin reads Mercury data through the **Mercury MCP server** (`https://mcp.mercury.com/mcp`). Authentication is the server's OAuth flow, handled by the MCP client; skills never see or handle credentials. If a tool call fails with an authorization error, tell the user to reconnect the Mercury MCP server and stop; do not retry.
+Answer questions about the user's Mercury account with the **Mercury MCP server** (`https://mcp.mercury.com/mcp`). Authentication is the server's OAuth flow, handled by the MCP client; skills never see or handle credentials. If a tool call fails with an authorization error, tell the user to reconnect the Mercury MCP server and stop; do not retry.
 
 Tool names below are the bare names (`listTransactions`). In Claude Code they appear with a plugin prefix, such as `mcp__plugin_mercury_mercury__listTransactions`; the part after the last `__` is the name used here.
 
 If the Mercury tools are not in your tool list, stop and tell the user to enable the `mercury` plugin (or connect the Mercury connector) before continuing.
 
-## Tools these skills use
+## When to use this skill
+
+Any question about the user's own Mercury data: "what's our balance", "what did we pay Vendor X", "list last week's card charges", "which statements are available", "how much came in this quarter". For a categorized spend report use `mercury-analyze-spend`; for unusual-activity checks use `mercury-detect-anomaly`; for a General Ledger reconciliation workpaper use `mercury-cash-reconciliation`. Those skills assume the rules below.
+
+## Tools
 
 | Tool | Purpose | Notes |
 |------|---------|-------|

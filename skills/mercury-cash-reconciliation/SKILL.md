@@ -5,7 +5,7 @@ metadata:
   version: "1.0.0"
   category: agentic
   tools: [getCurrentDate, getAccounts, getAccountStatements, listTransactions]
-  requires: [mercury-shared]
+  requires: [mercury-mcp]
 ---
 
 # Mercury Cash Reconciliation
@@ -14,7 +14,7 @@ Pulls the Mercury side of a cash General Ledger (GL) reconciliation for a target
 
 > This skill produces only the Mercury side of the workpaper. The other half — the GL-system balance pull, accounting-tool sync, and any journal-entry adjustments — comes from your finance close process and is supplied by the user.
 
-This skill is **read-only**. It pulls balances, statement metadata, and transactions through the Mercury MCP server and never modifies anything. Follow `mercury-shared` for pagination and formatting.
+This skill is **read-only**. It pulls balances, statement metadata, and transactions through the Mercury MCP server and never modifies anything. Follow `mercury-mcp` for pagination and formatting.
 
 ## Parameters
 
@@ -66,7 +66,7 @@ listTransactions({
 # while response.page.nextPage: repeat with start_after = response.page.nextPage
 ```
 
-Two deliberate departures from `mercury-shared` here:
+Two deliberate departures from `mercury-mcp` here:
 
 - **`start`/`end`, not `postedStart`/`postedEnd`.** Reconciliation needs everything *created* in the period, including items that had not posted by period end; that is exactly what the `createdAt` filter gives. Results still carry `postedAt`, which is what Step 4 compares against `periodEnd`.
 - **No `status` filter.** Pending and in-transit items are the reconciling differences; filter by status in Step 4 instead.
@@ -189,7 +189,7 @@ Reconciling items:
 
 ## Tips
 
-- **Pull without a `status` filter** for this skill; pending and in-transit items are the whole point. The `mercury-shared` default of `sent` applies to spend-analysis skills, not reconciliation.
+- **Pull without a `status` filter** for this skill; pending and in-transit items are the whole point. The `mercury-mcp` default of `sent` applies to spend-analysis skills, not reconciliation.
 - The statement closing balance is what the reconciliation owner ties to. If the statement record doesn't carry one, surface that clearly and tie to `currentBalance` with a note.
 - If the GL balance isn't supplied, emit the workpaper with placeholders rather than skipping — the reconciliation owner pastes the GL row in from the finance close process on their side.
 - For Broker Dealer / restricted-cash subaccounts, the entity number matters for the J-file. Confirm with the user which entity context the account belongs to before emitting the workpaper.
