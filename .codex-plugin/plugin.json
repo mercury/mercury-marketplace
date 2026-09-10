@@ -1,6 +1,6 @@
 {
   "name": "mercury",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mercury banking for Codex: connects to the hosted Mercury MCP server (OAuth) and adds finance skills for spend analysis, anomaly detection, and cash reconciliation.",
   "author": {
     "name": "Mercury",
