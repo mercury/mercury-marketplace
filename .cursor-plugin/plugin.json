@@ -1,7 +1,7 @@
 {
   "name": "mercury",
   "displayName": "Mercury",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Mercury banking for Cursor: connects to the hosted Mercury MCP server (OAuth) and adds finance skills for spend analysis, anomaly detection, and cash reconciliation.",
   "author": {
     "name": "Mercury",
