@@ -8,7 +8,7 @@
       "name": "mercury",
       "source": {
         "source": "local",
-        "path": "./plugins/mercury"
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -78,12 +78,12 @@ Receipt matching and upload, auto-categorization, journal-entry prep with note w
 .claude-plugin/    marketplace.json (Claude Code marketplace) and plugin.json (the mercury plugin; repo root is the plugin)
 .codex-plugin/     Codex plugin manifest
 .cursor-plugin/    Cursor plugin manifest
-.agents/plugins/   Codex marketplace manifest, pointing at plugins/mercury
+.agents/plugins/   Codex marketplace manifest (repo root is the plugin)
 .mcp.json          Hosted Mercury MCP server (Claude Code, Codex)
 mcp.json           Same server, Cursor format
 skills/            Canonical skill sources
 agents/            Claude Code subagents
-plugins/mercury/   Symlink mirror of the plugin for the Codex marketplace
+evals/             `claude plugin eval` cases with canned Mercury MCP mocks
 scripts/           Repo validation
 ```
 

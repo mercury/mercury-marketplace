@@ -38,6 +38,7 @@ Thanks for helping improve Mercury's agent skills. This guide covers adding or c
    ```
 
 6. Try it: `claude --plugin-dir .` then ask a question the skill should trigger on. Run `/reload-plugins` after edits.
+7. Add an eval case under `evals/<case>/` (see `evals/README.md`) so the skill's trigger, tool usage, and output are checked by `claude plugin eval .`. Extend the mocks in `evals/mocks/mercury/` if the skill needs a tool that is not mocked yet.
 
 ## Releasing
 

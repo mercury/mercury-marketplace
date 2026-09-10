@@ -3,7 +3,7 @@
 //  - every skills/<dir>/SKILL.md has name (== dir) and description frontmatter
 //  - every skill listed in the Claude/Cursor manifests exists, and every skill dir is listed
 //  - every MCP tool a skill declares in metadata.tools is one the production server exposes
-//  - the plugins/mercury mirror resolves
+//  - the Codex marketplace plugin source resolves to a .codex-plugin/plugin.json
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -74,8 +74,12 @@ for (const p of mp.plugins) {
   catch { err(`marketplace plugin "${p.name}" source ${p.source} has no .claude-plugin/plugin.json`); }
 }
 
-for (const link of ["plugins/mercury/skills", "plugins/mercury/.codex-plugin", "plugins/mercury/.mcp.json"]) {
-  try { await fs.stat(path.join(root, link)); } catch { err(`${link} does not resolve`); }
+const codexMp = await readJson(".agents/plugins/marketplace.json");
+for (const p of codexMp.plugins) {
+  const src = p.source?.path ?? "";
+  if (src.includes("..")) err(`Codex marketplace plugin "${p.name}" source path escapes the repo`);
+  try { await fs.access(path.join(root, src, ".codex-plugin", "plugin.json")); }
+  catch { err(`Codex marketplace plugin "${p.name}" source ${src} has no .codex-plugin/plugin.json`); }
 }
 
 const mcp = await readJson(".mcp.json");
@@ -87,4 +91,4 @@ if (errors.length) {
   for (const e of errors) console.error(`  - ${e}`);
   process.exit(1);
 }
-console.log(`✔ ${skillDirs.length} skills, manifests, mirror, and tool dependencies check out`);
+console.log(`✔ ${skillDirs.length} skills, manifests, marketplaces, and tool dependencies check out`);
