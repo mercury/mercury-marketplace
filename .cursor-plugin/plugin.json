@@ -10,6 +10,7 @@
   "homepage": "https://docs.mercury.com",
   "repository": "https://github.com/MercuryTechnologies/mercury-marketplace",
   "license": "MIT",
+  "logo": "assets/logo.svg",
   "keywords": ["mercury", "banking", "finance", "accounting", "transactions", "bookkeeping", "mcp"],
   "skills": ["./skills/mercury-mcp/", "./skills/mercury-analyze-spend/", "./skills/mercury-detect-anomaly/", "./skills/mercury-cash-reconciliation/"]
 }
