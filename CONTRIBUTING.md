@@ -28,7 +28,7 @@ Thanks for helping improve Mercury's agent skills. This guide covers adding or c
 
    `metadata.tools` lists every MCP tool the skill calls. The validator checks it against the production tool list.
 3. Structure the body as: overview, parameters table, execution strategy in numbered steps with the exact tool calls, presentation format, example output, tips. Keep the analysis logic in pseudocode the agent can turn into a script.
-4. Add the skill path to the `skills` arrays in `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`, and a row to the README table.
+4. Add the skill path to the `skills` arrays in `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`, and a row to the README table. The root `plugin.json` (Agent Plugins format) discovers `skills/` on its own.
 5. Run the checks:
 
    ```bash
@@ -41,4 +41,4 @@ Thanks for helping improve Mercury's agent skills. This guide covers adding or c
 
 ## Releasing
 
-Bump `version` in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, and `.cursor-plugin/plugin.json` together. Claude Code only offers users an update when the plugin version changes.
+Bump `version` in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and the root `plugin.json` together; `scripts/validate.mjs` fails if they drift. Claude Code only offers users an update when the plugin version changes.

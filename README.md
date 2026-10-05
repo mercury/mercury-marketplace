@@ -2,7 +2,7 @@
 
 Agent skills and plugins for [Mercury](https://mercury.com) business banking. Install them so your coding agent can answer questions about your accounts, analyze spend, flag unusual activity, and prepare reconciliation workpapers, all through the hosted Mercury MCP server with OAuth sign-in.
 
-Supports Claude Code, Codex CLI, Cursor, and any agent that reads [Agent Skills](https://agentskills.io/specification).
+Supports Claude Code, Codex CLI, Cursor, Grok Bot, and any agent that reads [Agent Skills](https://agentskills.io/specification) or [Agent Plugins](https://agent-plugins.org).
 
 ## Installation
 
@@ -32,9 +32,13 @@ codex plugin marketplace add MercuryTechnologies/mercury-marketplace
 
 Then run `/plugins` in Codex, select **Mercury**, and choose **Install Plugin**.
 
-### Cursor
+### Cursor and Grok Bot
 
-Add this repository as a plugin from Cursor's plugin settings. The manifest is `.cursor-plugin/plugin.json` and the MCP server is declared in `mcp.json`.
+Once the plugin is listed in the Cursor Marketplace, open **Customize** in Cursor, find **Mercury**, and click **Install**. Cursor opens Mercury's OAuth sign-in the first time a tool runs.
+
+To try an unpublished checkout, copy (don't symlink) this repository to `~/.cursor/plugins/local/mercury`, run **Developer: Reload Window**, and check under Customize that the plugin lists the `mercury` MCP server and the skills.
+
+Grok Bot and other hosts of the [Agent Plugins](https://agent-plugins.org) standard read the same root files: `plugin.json`, `skills/`, and `mcp.json`.
 
 ### Other agents (skills CLI)
 
@@ -78,9 +82,11 @@ Receipt matching and upload, auto-categorization, journal-entry prep with note w
 .claude-plugin/    marketplace.json (Claude Code marketplace) and plugin.json (the mercury plugin; repo root is the plugin)
 .codex-plugin/     Codex plugin manifest
 .cursor-plugin/    Cursor plugin manifest
+plugin.json        Agent Plugins manifest (Cursor, Grok Bot, other standard hosts)
+assets/            Logo for marketplace listings
 .agents/plugins/   Codex marketplace manifest, pointing at plugins/mercury
 .mcp.json          Hosted Mercury MCP server (Claude Code, Codex)
-mcp.json           Same server, Cursor format
+mcp.json           Same server, Agent Plugins format (Cursor, Grok Bot)
 skills/            Canonical skill sources
 agents/            Claude Code subagents
 plugins/mercury/   Symlink mirror of the plugin for the Codex marketplace

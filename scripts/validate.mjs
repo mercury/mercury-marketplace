@@ -4,6 +4,8 @@
 //  - every skill listed in the Claude/Cursor manifests exists, and every skill dir is listed
 //  - every MCP tool a skill declares in metadata.tools is one the production server exposes
 //  - the plugins/mercury mirror resolves
+//  - the root plugin.json and mcp.json conform to Agent Plugins 1.0.0 (Cursor, Grok Bot, other hosts)
+//    and share the version in the Claude and Cursor manifests; the Cursor logo path resolves
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -82,9 +84,44 @@ const mcp = await readJson(".mcp.json");
 if (mcp.mercpServers) err(".mcp.json: typo in mcpServers");
 if (!mcp.mcpServers?.mercury?.url?.startsWith("https://mcp.mercury.com/")) err(".mcp.json does not point at https://mcp.mercury.com/");
 
+// Agent Plugins format (https://agent-plugins.org): root plugin.json and mcp.json, read by Cursor,
+// Grok Bot, and any other host of the standard. Both schemas are closed, so unknown fields fail there.
+const AGENT_PLUGINS_SCHEMAS = "https://agent-plugins.org/schemas/1.0.0";
+const AGENT_PLUGINS_FIELDS = new Set([
+  "$schema", "name", "version", "description", "author", "homepage", "repository", "license", "keywords", "extensions",
+]);
+const cursorManifest = await readJson(".cursor-plugin/plugin.json");
+const claudeManifest = await readJson(".claude-plugin/plugin.json");
+
+const agentPlugin = await readJson("plugin.json");
+if (agentPlugin.$schema !== `${AGENT_PLUGINS_SCHEMAS}/plugin.schema.json`) err(`plugin.json $schema must be ${AGENT_PLUGINS_SCHEMAS}/plugin.schema.json`);
+if (agentPlugin.name !== "mercury") err(`plugin.json name must be "mercury", found "${agentPlugin.name}"`);
+for (const key of Object.keys(agentPlugin)) {
+  if (!AGENT_PLUGINS_FIELDS.has(key)) err(`plugin.json field "${key}" is not allowed by the Agent Plugins manifest schema`);
+}
+for (const [file, manifest] of [[".cursor-plugin/plugin.json", cursorManifest], [".claude-plugin/plugin.json", claudeManifest]]) {
+  if (manifest.version !== agentPlugin.version) err(`plugin.json version ${agentPlugin.version} does not match ${file} (${manifest.version})`);
+}
+
+const agentMcp = await readJson("mcp.json");
+if (agentMcp.$schema !== `${AGENT_PLUGINS_SCHEMAS}/mcp.schema.json`) err(`mcp.json $schema must be ${AGENT_PLUGINS_SCHEMAS}/mcp.schema.json`);
+for (const key of Object.keys(agentMcp)) {
+  if (key !== "$schema" && key !== "mcpServers") err(`mcp.json top-level field "${key}" is not allowed; servers go under mcpServers`);
+}
+const agentServer = agentMcp.mcpServers?.mercury;
+if (!agentServer) err("mcp.json must declare mcpServers.mercury");
+else {
+  if (agentServer.type !== "streamable-http") err(`mcp.json mcpServers.mercury.type must be "streamable-http", found ${JSON.stringify(agentServer.type)}`);
+  if (!agentServer.url?.startsWith("https://mcp.mercury.com/")) err("mcp.json does not point at https://mcp.mercury.com/");
+}
+
+const logo = cursorManifest.logo;
+if (typeof logo !== "string" || path.isAbsolute(logo) || logo.split(/[\\/]/).includes("..")) err('.cursor-plugin/plugin.json "logo" must be a relative path inside the repo');
+else { try { await fs.access(path.join(root, logo)); } catch { err(`.cursor-plugin/plugin.json logo "${logo}" does not exist`); } }
+
 if (errors.length) {
   console.error(`✖ ${errors.length} problem(s):`);
   for (const e of errors) console.error(`  - ${e}`);
   process.exit(1);
 }
-console.log(`✔ ${skillDirs.length} skills, manifests, mirror, and tool dependencies check out`);
+console.log(`✔ ${skillDirs.length} skills, manifests, mirror, Agent Plugins files, and tool dependencies check out`);
